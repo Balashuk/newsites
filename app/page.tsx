@@ -1,36 +1,26 @@
-export const revalidate=0;
-
+export const revalidate = 0;
 import Container from "./components/Container";
 import HomeBaner from "./components/HomeBanner";
 import ProductCart from "./components/products/ProductCart";
 import getProducts, { IProductParams } from "@/actions/getProducts";
 import NullData from "./components/NullData";
 
-// Додаємо тип для продуктів, щоб уникнути використання `any`
-interface IProduct {
-  id: string;
-  name: string;
-  price: number;
-  // Додайте інші властивості продуктів, якщо потрібно
-}
-
 interface HomeProps {
-  searchParams: Promise<IProductParams>; // searchParams тепер є Promise
+  searchParams: Promise<IProductParams>; // Using Promise for the type
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  // Ожидаємо параметри пошуку
-  const {  category } = await searchParams;
-
-  // Отримуємо продукти за параметрами
-  const products = await getProducts({ category });
+  const resolvedSearchParams = await searchParams; // Awaiting the promise
+  const products = await getProducts(resolvedSearchParams); // Using resolved params
 
   if (products.length === 0) {
-    return <NullData title="Товар не знайдено. Виберіть іншу категорію або натисніть 'Всі'" />;
+    return (
+      <NullData title="Товар не знайдено, виберіть іншу категорію або натисніть Всі" />
+    );
   }
 
-  // Функція для перемішування масиву продуктів
-  function shuffleArray(array: IProduct[]) {
+  // Function to shuffle an array
+  function shuffleArray(array: any) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -38,7 +28,6 @@ export default async function Home({ searchParams }: HomeProps) {
     return array;
   }
 
-  // Перемішуємо продукти
   const shuffleProducts = shuffleArray(products);
 
   return (
@@ -47,10 +36,10 @@ export default async function Home({ searchParams }: HomeProps) {
         <div>
           <HomeBaner />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
-          {shuffleProducts.map((product: IProduct) => {
-            return <ProductCart data={product} key={product.id} />;
-          })}
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl-grid-cols-5 2xl:grid-cols-6 gap-8">
+          {shuffleProducts.map((product: any) => (
+            <ProductCart key={product.id} data={product} />
+          ))}
         </div>
       </Container>
     </div>

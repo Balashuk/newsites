@@ -31,6 +31,7 @@
     "firebase": "^11.2.0",
     "micro": "^10.0.1",
     "moment": "^2.30.1",
+    "next": "^15.1.6",
     "next-auth": "^4.24.11",
     "query-string": "^9.1.1",
     "react": "^19.0.0",
@@ -46,7 +47,6 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "autoprefixer": "^10.4.20",
-    "next": "^15.1.6",
     "postcss": "^8.5.1",
     "postcss-import": "^16.1.0",
     "prisma": "^6.2.1",
